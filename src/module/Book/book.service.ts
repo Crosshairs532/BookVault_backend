@@ -9,7 +9,13 @@ const createBookDb = async (bookDetail: any) => {
 
   return book;
 };
+const getBookDb = async () => {
+  const book: Prisma.BookCreateInput[] = await prisma.book.findMany({});
+
+  return book;
+};
 
 export const bookService = {
   createBookDb,
+  getBookDb,
 };
