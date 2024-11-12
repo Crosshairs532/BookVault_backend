@@ -22,11 +22,50 @@ const getBooks = CatchAsync(async (req: Request, res: Response) => {
   SendResponse(res, {
     success: true,
     status: 200,
-    message: "Book created successfully",
+    message: "Book retrieved successfully",
     data: allBook,
+  });
+});
+
+const getSingleBook = CatchAsync(async (req: Request, res: Response) => {
+  const { bookId } = req.params;
+
+  const result = await bookService.getSingleBookDb(bookId);
+  SendResponse(res, {
+    success: true,
+    status: 200,
+    message: "Book retrieved successfully",
+    data: result,
+  });
+});
+
+const updateBook = CatchAsync(async (req: Request, res: Response) => {
+  const { bookId } = req.params;
+  const updateData = req.body;
+  const result = await bookService.updateBookDb(bookId, updateData);
+
+  SendResponse(res, {
+    success: true,
+    status: 200,
+    message: "Book updated successfully",
+    data: result,
+  });
+});
+
+const deleteBook = CatchAsync(async (req: Request, res: Response) => {
+  const { bookId } = req.params;
+
+  const result = await bookService.deleteBookDb(bookId);
+  SendResponse(res, {
+    success: true,
+    status: 200,
+    message: "Book deleted successfully",
   });
 });
 export const BooksController = {
   createBooks,
   getBooks,
+  getSingleBook,
+  updateBook,
+  deleteBook,
 };
