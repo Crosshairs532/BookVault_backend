@@ -40,14 +40,14 @@ const getSingleMemberBook = CatchAsync(async (req: Request, res: Response) => {
 });
 
 const updateBook = CatchAsync(async (req: Request, res: Response) => {
-  const { bookId } = req.params;
+  const { memberId } = req.params;
   const updateData = req.body;
-  const result = await memberService.updateBookDb(bookId, updateData);
+  const result = await memberService.updateBookDb(memberId, updateData);
 
   SendResponse(res, {
     success: true,
     status: 200,
-    message: "Book updated successfully",
+    message: "Member updated successfully",
     data: result,
   });
 });
@@ -67,4 +67,5 @@ export const memberController = {
   createMember,
   getMembers,
   getSingleMemberBook,
+  updateBook,
 };

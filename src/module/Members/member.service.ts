@@ -24,22 +24,20 @@ const getSingleMemberDb = async (id: string) => {
 };
 
 const updateBookDb = async (id: string, updatedData: any) => {
-  const isExist = await prisma.book.findUniqueOrThrow({
+  const isExist = await prisma.member.findUniqueOrThrow({
     where: {
-      bookId: id,
+      memberId: id,
     },
   });
 
-  const updated = await prisma.book.update({
+  const updated = await prisma.member.update({
     where: {
-      bookId: id,
+      memberId: id,
     },
     data: {
-      title: updatedData.title,
-      genre: updatedData.genre,
-      publishedYear: updatedData.publishedYear,
-      totalCopies: updatedData.totalCopies,
-      availableCopies: updatedData.availableCopies,
+      name: updatedData.name,
+      email: updatedData.email,
+      phone: updatedData.phone,
     },
   });
 
