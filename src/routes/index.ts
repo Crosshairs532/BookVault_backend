@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { bookRoutes } from "../module/Book/book.routes";
 import { memberRoutes } from "../module/Members/member.routes";
+import { borrowRoutes } from "../module/Borrow/borrow.routes";
 
 const router = Router();
 
@@ -12,6 +13,10 @@ const BookVaultRoute = [
   {
     path: "/members",
     route: memberRoutes,
+  },
+  {
+    path: "/borrow",
+    route: borrowRoutes,
   },
 ];
 
