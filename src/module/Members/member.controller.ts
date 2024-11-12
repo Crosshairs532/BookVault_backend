@@ -39,10 +39,10 @@ const getSingleMemberBook = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateBook = CatchAsync(async (req: Request, res: Response) => {
+const updateMember = CatchAsync(async (req: Request, res: Response) => {
   const { memberId } = req.params;
   const updateData = req.body;
-  const result = await memberService.updateBookDb(memberId, updateData);
+  const result = await memberService.updateMemberDb(memberId, updateData);
 
   SendResponse(res, {
     success: true,
@@ -52,14 +52,14 @@ const updateBook = CatchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteBook = CatchAsync(async (req: Request, res: Response) => {
-  const { bookId } = req.params;
+const deleteMember = CatchAsync(async (req: Request, res: Response) => {
+  const { memberId } = req.params;
 
-  const result = await memberService.deleteBookDb(bookId);
+  const result = await memberService.deleteMemberDb(memberId);
   SendResponse(res, {
     success: true,
     status: 200,
-    message: "Book deleted successfully",
+    message: "Member deleted successfully",
   });
 });
 
@@ -67,5 +67,6 @@ export const memberController = {
   createMember,
   getMembers,
   getSingleMemberBook,
-  updateBook,
+  updateMember,
+  deleteMember,
 };

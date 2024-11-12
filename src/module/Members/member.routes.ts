@@ -6,7 +6,7 @@ const route = Router();
 route.post("/", memberController.createMember);
 route.get("/", memberController.getMembers);
 route.get("/:memberId", memberController.getSingleMemberBook);
-route.put("/:memberId", memberController.updateBook);
-// route.delete("/:bookId", memberController.deleteBook);
+route.put("/:memberId", memberController.updateMember);
+route.delete("/:memberId", memberController.deleteMember);
 
 export const memberRoutes = route;

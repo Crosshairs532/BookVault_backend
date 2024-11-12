@@ -23,7 +23,7 @@ const getSingleMemberDb = async (id: string) => {
   return member;
 };
 
-const updateBookDb = async (id: string, updatedData: any) => {
+const updateMemberDb = async (id: string, updatedData: any) => {
   const isExist = await prisma.member.findUniqueOrThrow({
     where: {
       memberId: id,
@@ -44,16 +44,16 @@ const updateBookDb = async (id: string, updatedData: any) => {
   return updated;
 };
 
-const deleteBookDb = async (id: string) => {
-  const isExist = await prisma.book.findUniqueOrThrow({
+const deleteMemberDb = async (id: string) => {
+  const isExist = await prisma.member.findUniqueOrThrow({
     where: {
-      bookId: id,
+      memberId: id,
     },
   });
 
-  const deletedData = await prisma.book.delete({
+  const deletedData = await prisma.member.delete({
     where: {
-      bookId: id,
+      memberId: id,
     },
   });
 
@@ -63,6 +63,6 @@ export const memberService = {
   createMemberDb,
   getMembersDb,
   getSingleMemberDb,
-  updateBookDb,
-  deleteBookDb,
+  updateMemberDb,
+  deleteMemberDb,
 };
