@@ -1,40 +1,40 @@
 import { Request, Response } from "express";
 import CatchAsync from "../../utils/CatchAsync";
-import { TBook } from "./book.interface";
-import { bookService } from "./book.service";
+
 import { SendResponse } from "../../utils/sendResponse";
+import { memberService } from "./member.service";
 
-const createBooks = CatchAsync(async (req: Request, res: Response) => {
-  const bookDetail = req.body;
+const createMember = CatchAsync(async (req: Request, res: Response) => {
+  const memberDetail = req.body;
 
-  const result = await bookService.createBookDb(bookDetail);
+  const result = await memberService.createMemberDb(memberDetail);
 
   SendResponse(res, {
     success: true,
     status: 201,
-    message: "Book created successfully",
+    message: "Member created successfully",
     data: result,
   });
 });
-const getBooks = CatchAsync(async (req: Request, res: Response) => {
-  const allBook = await bookService.getBookDb();
+const getMembers = CatchAsync(async (req: Request, res: Response) => {
+  const allMembers = await memberService.getMembersDb();
 
   SendResponse(res, {
     success: true,
     status: 200,
     message: "Book retrieved successfully",
-    data: allBook,
+    data: allMembers,
   });
 });
 
-const getSingleBook = CatchAsync(async (req: Request, res: Response) => {
-  const { bookId } = req.params;
+const getSingleMemberBook = CatchAsync(async (req: Request, res: Response) => {
+  const { memberId } = req.params;
 
-  const result = await bookService.getSingleBookDb(bookId);
+  const result = await memberService.getSingleMemberDb(memberId);
   SendResponse(res, {
     success: true,
     status: 200,
-    message: "Book retrieved successfully",
+    message: "Member retrieved successfully",
     data: result,
   });
 });
@@ -42,7 +42,7 @@ const getSingleBook = CatchAsync(async (req: Request, res: Response) => {
 const updateBook = CatchAsync(async (req: Request, res: Response) => {
   const { bookId } = req.params;
   const updateData = req.body;
-  const result = await bookService.updateBookDb(bookId, updateData);
+  const result = await memberService.updateBookDb(bookId, updateData);
 
   SendResponse(res, {
     success: true,
@@ -55,17 +55,16 @@ const updateBook = CatchAsync(async (req: Request, res: Response) => {
 const deleteBook = CatchAsync(async (req: Request, res: Response) => {
   const { bookId } = req.params;
 
-  const result = await bookService.deleteBookDb(bookId);
+  const result = await memberService.deleteBookDb(bookId);
   SendResponse(res, {
     success: true,
     status: 200,
     message: "Book deleted successfully",
   });
 });
-export const BooksController = {
-  createBooks,
-  getBooks,
-  getSingleBook,
-  updateBook,
-  deleteBook,
+
+export const memberController = {
+  createMember,
+  getMembers,
+  getSingleMemberBook,
 };
