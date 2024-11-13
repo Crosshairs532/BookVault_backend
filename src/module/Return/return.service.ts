@@ -1,12 +1,16 @@
 import { prisma } from "../../config/prisma";
+import AppError from "../../utils/AppError";
 
 const returnBook = async (borrowId: { borrowId: string }) => {
-  await prisma.borrowRecord.findUniqueOrThrow({
+  const isBorrowRecordExists = await prisma.borrowRecord.findUnique({
     where: {
       borrowId: borrowId.borrowId,
     },
   });
 
+  if (!isBorrowRecordExists) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Invalid Book ID");
+  }
   const returnedBook = await prisma.borrowRecord.update({
     where: {
       borrowId: borrowId.borrowId,

@@ -1,41 +1,36 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "../../config/prisma";
-import { TBook } from "./book.interface";
 import { NextFunction } from "express";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import AppError from "../../utils/AppError";
+import httpStatus from "http-status";
 
 const createBookDb = async (bookDetail: any, next: NextFunction) => {
-  try {
-    const book: Prisma.BookCreateInput = await prisma.book.create({
-      data: bookDetail,
-    });
+  const book: Prisma.BookCreateInput = await prisma.book.create({
+    data: bookDetail,
+  });
 
-    return book;
-  } catch (error) {
-    next(error);
-  }
+  return book;
 };
 const getBookDb = async (next: NextFunction) => {
-  try {
-    const book: Prisma.BookCreateInput[] = await prisma.book.findMany({});
+  const book: Prisma.BookCreateInput[] = await prisma.book.findMany({});
 
-    return book;
-  } catch (error) {
-    next(error);
-  }
+  return book;
 };
 const getSingleBookDb = async (id: string, next: NextFunction) => {
-  try {
-    const book = await prisma.book.findUniqueOrThrow({
-      where: {
-        bookId: id,
-      },
-    });
+  const book = await prisma.book.findUnique({
+    where: {
+      bookId: id,
+    },
+  });
 
-    return book;
-  } catch (error) {
-    next(error);
+  if (!book) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "No Such Book exist with this ID"
+    );
   }
+
+  return book;
 };
 
 const updateBookDb = async (
@@ -43,54 +38,56 @@ const updateBookDb = async (
   updatedData: any,
   next: NextFunction
 ) => {
-  try {
-    const isExist = await prisma.book.findUniqueOrThrow({
-      where: {
-        bookId: id,
-      },
-    });
+  const isExist = await prisma.book.findUnique({
+    where: {
+      bookId: id,
+    },
+  });
 
-    const updated = await prisma.book.update({
-      where: {
-        bookId: id,
-      },
-      data: {
-        title: updatedData.title,
-        genre: updatedData.genre,
-        publishedYear: updatedData.publishedYear,
-        totalCopies: updatedData.totalCopies,
-        availableCopies: updatedData.availableCopies,
-      },
-    });
-
-    return updated;
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      throw new Error("Requested Id Not Found!");
-    }
+  if (!isExist) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "No Such Book exist with this ID"
+    );
   }
+
+  const updated = await prisma.book.update({
+    where: {
+      bookId: id,
+    },
+    data: {
+      title: updatedData.title,
+      genre: updatedData.genre,
+      publishedYear: updatedData.publishedYear,
+      totalCopies: updatedData.totalCopies,
+      availableCopies: updatedData.availableCopies,
+    },
+  });
+
+  return updated;
 };
 
 const deleteBookDb = async (id: string, next: NextFunction) => {
-  try {
-    await prisma.book.findUniqueOrThrow({
-      where: {
-        bookId: id,
-      },
-    });
+  const isBook = await prisma.book.findUnique({
+    where: {
+      bookId: id,
+    },
+  });
 
-    const deletedData = await prisma.book.delete({
-      where: {
-        bookId: id,
-      },
-    });
-
-    return deletedData;
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      throw new Error("Requested Id Not Found!");
-    }
+  if (!isBook) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "No Such Book exist with this ID"
+    );
   }
+
+  const deletedData = await prisma.book.delete({
+    where: {
+      bookId: id,
+    },
+  });
+
+  return deletedData;
 };
 export const bookService = {
   createBookDb,

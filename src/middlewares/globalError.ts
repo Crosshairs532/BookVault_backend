@@ -1,19 +1,18 @@
 import { Prisma } from "@prisma/client";
 import { ErrorRequestHandler } from "express";
 import httpStatus from "http-status";
+import AppError from "../utils/AppError";
 const globalError: ErrorRequestHandler = (err, req, res, next) => {
-  let status = httpStatus.INTERNAL_SERVER_ERROR;
-  let message = "Something went wrong !";
+  let status = httpStatus.INTERNAL_SERVER_ERROR || 500;
+  let message = err.message || "Internal Server Error";
   let success = false;
-
-  // if (err instanceof Prisma.PrismaClientKnownRequestError) {
-  //   status = httpStatus.BAD_REQUEST;
-  //   message = err.message;
-  //   success = false;
-  // }
+  if (err instanceof AppError) {
+    status = err.statusCode;
+    message = err.message;
+  }
   res.status(status).json({
-    success: false,
-    message: err.name || message,
+    success: success,
+    message: message,
     status: status,
   });
 };
