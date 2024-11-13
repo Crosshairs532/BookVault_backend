@@ -5,7 +5,7 @@ import { SendResponse } from "../../utils/sendResponse";
 
 const returnBook = CatchAsync(async (req: Request, res: Response) => {
   const borrowId = req.body;
-
+  console.log(borrowId);
   const result = await returnService.returnBook(borrowId);
 
   SendResponse(res, {

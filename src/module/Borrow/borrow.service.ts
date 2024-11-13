@@ -37,26 +37,26 @@ const overdueBook = async () => {
       member: true,
     },
   });
-  const overDueBooks = overdue.map((book: any) => {
-    let overdueBook;
-    const overdueday: number = Math.abs(
-      14 -
-        Math.floor(
-          new Date(book.returnDate - book.borrowDate) / (1000 * 60 * 60 * 24)
-        )
-    );
+  const overDueBooks = overdue.filter((book: any) => {
+    const overdueday: number =
+      Math.floor(
+        (new Date(book.returnDate).getTime() -
+          new Date(book.borrowDate).getTime()) /
+          (1000 * 60 * 60 * 24)
+      ) - 14;
     if (overdueday > 0) {
-      overdueBook = {
-        borrowId: book.borrowId,
-        bookTittle: book.book.title,
-        borrowerName: book.member.name,
-        overdueDays: overdueday,
-      };
+      return (book["overdueday"] = overdueday);
     }
-    return overdueBook;
   });
 
-  return overDueBooks;
+  const books = overDueBooks.map((book: any) => ({
+    borrowId: book.borrowId,
+    bookTittle: book.book.title,
+    borrowerName: book.member.name,
+    overdueDays: book.overdueday,
+  }));
+
+  return books;
 };
 export const borrowService = {
   borrowBook,
