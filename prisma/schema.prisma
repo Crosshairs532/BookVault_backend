@@ -42,4 +42,4 @@ model BorrowRecord{
   memberId String
   book Book @relation(fields: [bookId],references: [bookId])
   member Member @relation(fields: [memberId], references: [memberId])
-  }
+}

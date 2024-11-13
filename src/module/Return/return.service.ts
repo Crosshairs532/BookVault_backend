@@ -7,13 +7,16 @@ const returnBook = async (borrowId: { borrowId: string }) => {
     },
   });
 
-  const res = await prisma.borrowRecord.delete({
+  const returnedBook = await prisma.borrowRecord.update({
     where: {
       borrowId: borrowId.borrowId,
     },
+    data: {
+      returnDate: new Date(),
+    },
   });
 
-  console.log(res);
+  console.log(returnedBook);
 };
 
 export const returnService = {
